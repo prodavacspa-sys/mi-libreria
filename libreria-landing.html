@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Páginas Vivas — Librería Online</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:       #1C1C1E;
+    --paper:     #F7F3EC;
+    --terracota: #C8502A;
+    --musgo:     #4A7C6F;
+    --madera:    #8B7355;
+    --gris:      #6B6560;
+    --paper-dark:#EDE8DF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--paper);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--terracota); }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    color: var(--paper-dark);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    background: var(--terracota) !important;
+    color: white !important;
+    opacity: 1 !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    text-transform: uppercase !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: calc(100vh - 64px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 4rem;
+    padding: 6rem 5vw 4rem;
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; right: 0; top: 0;
+    width: 48%;
+    height: 100%;
+    background: var(--paper-dark);
+    z-index: 0;
+  }
+  .hero-text { position: relative; z-index: 1; }
+  .hero-eyebrow {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--musgo);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 2rem; height: 2px;
+    background: var(--musgo);
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+    color: var(--ink);
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--terracota);
+  }
+
+  /* Ink reveal animation */
+  .ink-reveal {
+    display: inline-block;
+    clip-path: inset(0 100% 0 0);
+    animation: inkReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  }
+  @keyframes inkReveal {
+    to { clip-path: inset(0 0% 0 0); }
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--gris);
+    max-width: 42ch;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.9rem 2rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none; cursor: pointer;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--terracota); transform: translateY(-1px); }
+  .btn-secondary {
+    color: var(--ink);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--madera);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--terracota); border-color: var(--terracota); }
+
+  .hero-stats {
+    margin-top: 3.5rem;
+    display: flex; gap: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--paper-dark);
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--ink);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--gris);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-visual {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .book-card {
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .book-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.13); }
+  .book-card.featured {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: 1fr 1.5fr;
+  }
+  .book-cover {
+    aspect-ratio: 2/3;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: white;
+    padding: 1.2rem;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .book-card.featured .book-cover { aspect-ratio: auto; min-height: 160px; }
+  .book-info { padding: 1rem; }
+  .book-genre {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--musgo);
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+  .book-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 0.25rem;
+  }
+  .book-author { font-size: 0.78rem; color: var(--gris); margin-bottom: 0.75rem; }
+  .book-price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--terracota);
+  }
+  .book-price .original {
+    font-size: 0.8rem;
+    color: var(--gris);
+    text-decoration: line-through;
+    font-weight: 400;
+    margin-right: 0.5rem;
+  }
+
+  /* ── CATEGORÍAS ── */
+  .categories {
+    background: var(--ink);
+    padding: 1.5rem 5vw;
+    display: flex; gap: 0; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .categories::-webkit-scrollbar { display: none; }
+  .cat-pill {
+    flex-shrink: 0;
+    color: var(--paper-dark);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .cat-pill:hover, .cat-pill.active {
+    color: white;
+    border-color: var(--terracota);
+  }
+
+  /* ── CATÁLOGO ── */
+  .catalog {
+    padding: 5rem 5vw;
+    background: var(--paper);
+  }
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--paper-dark);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .section-link {
+    font-size: 0.85rem;
+    color: var(--musgo);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--musgo);
+  }
+
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.75rem;
+  }
+  .catalog-book {
+    background: white;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .catalog-book:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.1); }
+  .catalog-book .badge {
+    position: absolute; top: 0.75rem; left: 0.75rem;
+    background: var(--terracota); color: white;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.2rem 0.5rem; border-radius: 2px;
+  }
+  .catalog-cover {
+    aspect-ratio: 2/3;
+    display: flex; align-items: flex-end; justify-content: flex-start;
+    padding: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.2;
+    background-size: cover; background-position: center;
+  }
+  .catalog-info { padding: 1rem; }
+  .catalog-info .book-genre { margin-bottom: 0.2rem; }
+  .catalog-info .book-title { font-size: 0.92rem; margin-bottom: 0.15rem; }
+  .catalog-info .book-author { margin-bottom: 0.65rem; }
+  .catalog-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .add-btn {
+    width: 32px; height: 32px;
+    background: var(--ink); color: white;
+    border: none; border-radius: 50%;
+    font-size: 1.2rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    line-height: 1;
+  }
+  .add-btn:hover { background: var(--terracota); }
+
+  /* ── BANNER DESTACADO ── */
+  .banner {
+    background: var(--musgo);
+    padding: 5rem 5vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .banner-text {}
+  .banner-eyebrow {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1.25rem;
+  }
+  .banner-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+  .banner-desc {
+    color: rgba(255,255,255,0.75);
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 44ch;
+    margin-bottom: 2rem;
+  }
+  .btn-light {
+    background: white;
+    color: var(--musgo);
+    padding: 0.9rem 2rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: none; cursor: pointer;
+    text-decoration: none;
+    border-radius: 2px;
+    display: inline-block;
+    transition: background 0.2s;
+  }
+  .btn-light:hover { background: var(--paper); }
+  .banner-visual {
+    display: flex; justify-content: center; align-items: center;
+    gap: 1.5rem;
+  }
+  .banner-book {
+    background: rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 2rem 1.5rem;
+    font-family: 'Playfair Display', serif;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.4;
+    min-width: 110px;
+    border: 1px solid rgba(255,255,255,0.2);
+    transform: rotate(-4deg);
+  }
+  .banner-book:nth-child(2) { transform: rotate(2deg) translateY(-1rem); }
+  .banner-book:nth-child(3) { transform: rotate(-2deg); }
+
+  /* ── TESTIMONIOS ── */
+  .testimonials {
+    padding: 5rem 5vw;
+    background: var(--paper-dark);
+  }
+  .testimonials .section-title { margin-bottom: 2.5rem; }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .testi-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 4px;
+    border-left: 3px solid var(--terracota);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .testi-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+  .testi-author { font-size: 0.82rem; font-weight: 600; color: var(--gris); }
+  .testi-stars { color: var(--terracota); font-size: 0.8rem; margin-bottom: 0.75rem; }
+
+  /* ── NEWSLETTER ── */
+  .newsletter {
+    background: var(--ink);
+    padding: 5rem 5vw;
+    text-align: center;
+  }
+  .newsletter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 3vw, 3rem);
+    color: white;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .newsletter-desc { color: rgba(255,255,255,0.6); font-size: 1rem; margin-bottom: 2rem; }
+  .newsletter-form {
+    display: flex; gap: 0;
+    max-width: 480px; margin: 0 auto;
+  }
+  .newsletter-form input {
+    flex: 1;
+    padding: 0.9rem 1.25rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border-radius: 2px 0 0 2px;
+    outline: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-right: none;
+  }
+  .newsletter-form input::placeholder { color: rgba(255,255,255,0.35); }
+  .newsletter-form button {
+    padding: 0.9rem 1.5rem;
+    background: var(--terracota);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: none; cursor: pointer;
+    border-radius: 0 2px 2px 0;
+    transition: background 0.2s;
+  }
+  .newsletter-form button:hover { background: #a8401f; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #111;
+    padding: 3rem 5vw 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 2rem;
+  }
+  .footer-brand { }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--paper);
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  .footer-logo span { color: var(--terracota); }
+  .footer-tagline { font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.6; max-width: 30ch; }
+  .footer-col h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .footer-col a {
+    display: block;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: white; }
+  .footer-bottom {
+    background: #111;
+    padding: 1.25rem 5vw;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 0.5rem;
+  }
+  .footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 5vw; }
+    .hero::before { display: none; }
+    .hero-visual { display: none; }
+    .banner { grid-template-columns: 1fr; }
+    .banner-visual { display: none; }
+    footer { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ink-reveal { animation: none; clip-path: none; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Páginas<span>.</span>Vivas</a>
+  <div class="nav-links">
+    <a href="#catalogo">Catálogo</a>
+    <a href="#novedades">Novedades</a>
+    <a href="#colecciones">Colecciones</a>
+    <a href="#" class="nav-cta">Mi carrito (0)</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Librería independiente</div>
+    <h1 class="hero-title">
+      Los libros que<br>
+      <em class="ink-reveal">cambian algo</em><br>
+      en ti
+    </h1>
+    <p class="hero-desc">
+      Más de 4.000 títulos cuidadosamente seleccionados. Literatura, ensayo, ciencia y clásicos entregados en 24 horas.
+    </p>
+    <div class="hero-actions">
+      <a href="#catalogo" class="btn-primary">Explorar catálogo</a>
+      <a href="#colecciones" class="btn-secondary">Ver colecciones</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">4.200+</span>
+        <span class="stat-label">Títulos disponibles</span>
+      </div>
+      <div>
+        <span class="stat-num">24 h</span>
+        <span class="stat-label">Despacho express</span>
+      </div>
+      <div>
+        <span class="stat-num">98%</span>
+        <span class="stat-label">Clientes satisfechos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <!-- Libro destacado -->
+    <div class="book-card featured">
+      <div class="book-cover" style="background: linear-gradient(145deg, #2C4A3E, #4A7C6F);">
+        <div>
+          <div style="font-size:0.7rem;opacity:0.7;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Destacado del mes</div>
+          El nombre del viento
+        </div>
+      </div>
+      <div class="book-info" style="padding:1.25rem">
+        <div class="book-genre">Fantasía épica</div>
+        <div class="book-title" style="font-size:1.1rem;margin-bottom:0.3rem">El nombre del viento</div>
+        <div class="book-author">Patrick Rothfuss</div>
+        <div style="font-size:0.82rem;color:var(--gris);line-height:1.5;margin-bottom:1rem">La crónica de un mago legendado contada con su propia voz.</div>
+        <div class="book-price"><span class="original">$15.990</span>$12.990</div>
+        <button class="btn-primary" style="margin-top:1rem;width:100%;text-align:center">Agregar al carrito</button>
+      </div>
+    </div>
+    <!-- Libros pequeños -->
+    <div class="book-card">
+      <div class="book-cover" style="background: linear-gradient(145deg, #6B3A2A, #C8502A); aspect-ratio: 2/3; font-size:0.8rem">Ficciones</div>
+      <div class="book-info">
+        <div class="book-genre">Literatura</div>
+        <div class="book-title">Ficciones</div>
+        <div class="book-author">J. L. Borges</div>
+        <div class="book-price">$9.990</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-cover" style="background: linear-gradient(145deg, #1a3a5c, #2d6a9f); aspect-ratio: 2/3; font-size:0.8rem">Sapiens</div>
+      <div class="book-info">
+        <div class="book-genre">Historia</div>
+        <div class="book-title">Sapiens</div>
+        <div class="book-author">Yuval Noah Harari</div>
+        <div class="book-price">$13.490</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORÍAS -->
+<div class="categories">
+  <div class="cat-pill active">Todos</div>
+  <div class="cat-pill">Novela</div>
+  <div class="cat-pill">Ensayo</div>
+  <div class="cat-pill">Ciencia</div>
+  <div class="cat-pill">Historia</div>
+  <div class="cat-pill">Filosofía</div>
+  <div class="cat-pill">Poesía</div>
+  <div class="cat-pill">Infantil</div>
+  <div class="cat-pill">Autoayuda</div>
+</div>
+
+<!-- CATÁLOGO -->
+<section class="catalog" id="catalogo">
+  <div class="section-header">
+    <h2 class="section-title">Más vendidos</h2>
+    <a href="#" class="section-link">Ver todos →</a>
+  </div>
+  <div class="books-grid">
+
+    <div class="catalog-book">
+      <div class="badge">Oferta</div>
+      <div class="catalog-cover" style="background: linear-gradient(160deg, #5C2D44, #8B1A4A)">Cien años de soledad</div>
+      <div class="catalog-info">
+        <div class="book-genre">Realismo mágico</div>
+        <div class="book-title">Cien años de soledad</div>
+        <div class="book-author">Gabriel García Márquez</div>
+        <div class="catalog-footer">
+          <div class="book-price"><span class="original">$14.990</span>$11.500</div>
+          <button class="add-btn" title="Agregar">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog-book">
+      <div class="catalog-cover" style="background: linear-gradient(160deg, #1C3A2E, #2E5D48)">El Señor de los Anillos</div>
+      <div class="catalog-info">
+        <div class="book-genre">Fantasía</div>
+        <div class="book-title">El Señor de los Anillos</div>
+        <div class="book-author">J. R. R. Tolkien</div>
+        <div class="catalog-footer">
+          <div class="book-price">$19.990</div>
+          <button class="add-btn" title="Agregar">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog-book">
+      <div class="badge">Nuevo</div>
+      <div class="catalog-cover" style="background: linear-gradient(160deg, #2A3A5C, #3D5A9C)">Intermezzo</div>
+      <div class="catalog-info">
+        <div class="book-genre">Ficción contemporánea</div>
+        <div class="book-title">Intermezzo</div>
+        <div class="book-author">Sally Rooney</div>
+        <div class="catalog-footer">
+          <div class="book-price">$16.490</div>
+          <button class="add-btn" title="Agregar">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog-book">
+      <div class="catalog-cover" style="background: linear-gradient(160deg, #4A3000, #8B6000)">El mundo de Sofía</div>
+      <div class="catalog-info">
+        <div class="book-genre">Filosofía</div>
+        <div class="book-title">El mundo de Sofía</div>
+        <div class="book-author">Jostein Gaarder</div>
+        <div class="catalog-footer">
+          <div class="book-price">$10.990</div>
+          <button class="add-btn" title="Agregar">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog-book">
+      <div class="catalog-cover" style="background: linear-gradient(160deg, #3A1A1A, #6B2020)">La sombra del viento</div>
+      <div class="catalog-info">
+        <div class="book-genre">Misterio</div>
+        <div class="book-title">La sombra del viento</div>
+        <div class="book-author">Carlos Ruiz Zafón</div>
+        <div class="catalog-footer">
+          <div class="book-price">$12.490</div>
+          <button class="add-btn" title="Agregar">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog-book">
+      <div class="badge">Clásico</div>
+      <div class="catalog-cover" style="background: linear-gradient(160deg, #0D1B2A, #1B3A5A)">1984</div>
+      <div class="catalog-info">
+        <div class="book-genre">Distopía</div>
+        <div class="book-title">1984</div>
+        <div class="book-author">George Orwell</div>
+        <div class="catalog-footer">
+          <div class="book-price">$8.990</div>
+          <button class="add-btn" title="Agregar">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BANNER -->
+<section class="banner" id="colecciones">
+  <div class="banner-text">
+    <div class="banner-eyebrow">Colección especial</div>
+    <h2 class="banner-title">Literatura latinoamericana en un solo lugar</h2>
+    <p class="banner-desc">Desde el boom hasta las voces más jóvenes del continente. Más de 600 títulos organizados por país, época y autor.</p>
+    <a href="#" class="btn-light">Ver la colección completa</a>
+  </div>
+  <div class="banner-visual">
+    <div class="banner-book">Isabel<br>Allende</div>
+    <div class="banner-book">Mario<br>Vargas<br>Llosa</div>
+    <div class="banner-book">Gabriela<br>Mistral</div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section class="testimonials" id="novedades">
+  <h2 class="section-title" style="font-family:'Playfair Display',serif;font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;margin-bottom:2.5rem">Lo que dicen nuestros lectores</h2>
+  <div class="testimonials-grid">
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Llegó al día siguiente con el libro perfectamente envuelto. Es difícil encontrar una librería que cuide tanto el detalle."</p>
+      <div class="testi-author">— Valentina R., Santiago</div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"El catálogo es increíble. Encontré títulos que no había visto en ninguna otra tienda online. Ya van tres pedidos."</p>
+      <div class="testi-author">— Diego M., Valparaíso</div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Me encanta que cada libro lleva una pequeña nota de los editores. Se nota que los leen de verdad antes de recomendar."</p>
+      <div class="testi-author">— Ana P., Concepción</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <h2 class="newsletter-title">Una recomendación,<br>cada semana</h2>
+  <p class="newsletter-desc">Sin algoritmos. Solo libros seleccionados por lectores de verdad.</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="tu@correo.com">
+    <button>Suscribirme</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span class="footer-logo">Páginas<span>.</span>Vivas</span>
+    <p class="footer-tagline">Una librería independiente para lectores que creen que los libros cambian el mundo.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Librería</h4>
+    <a href="#">Catálogo completo</a>
+    <a href="#">Novedades</a>
+    <a href="#">Colecciones</a>
+    <a href="#">Libros usados</a>
+  </div>
+  <div class="footer-col">
+    <h4>Ayuda</h4>
+    <a href="#">Cómo comprar</a>
+    <a href="#">Despacho y plazos</a>
+    <a href="#">Devoluciones</a>
+    <a href="#">Contacto</a>
+  </div>
+  <div class="footer-col">
+    <h4>Nosotros</h4>
+    <a href="#">Nuestra historia</a>
+    <a href="#">Blog lector</a>
+    <a href="#">Trabaja con nosotros</a>
+    <a href="#">Instagram</a>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2026 Páginas Vivas. Todos los derechos reservados.</p>
+  <p>Política de privacidad · Términos y condiciones</p>
+</div>
+
+<script>
+  // Categorías activas
+  document.querySelectorAll('.cat-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+
+  // Botones de agregar al carrito
+  let cartCount = 0;
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      cartCount++;
+      const navCta = document.querySelector('.nav-cta');
+      if (navCta) navCta.textContent = `Mi carrito (${cartCount})`;
+      btn.textContent = '✓';
+      btn.style.background = 'var(--musgo)';
+      setTimeout(() => { btn.textContent = '+'; btn.style.background = ''; }, 1500);
+    });
+  });
+
+  // Botón "Agregar" del destacado
+  const featuredBtn = document.querySelector('.hero-visual .btn-primary');
+  if (featuredBtn) {
+    featuredBtn.addEventListener('click', () => {
+      cartCount++;
+      const navCta = document.querySelector('.nav-cta');
+      if (navCta) navCta.textContent = `Mi carrito (${cartCount})`;
+      featuredBtn.textContent = '✓ Agregado';
+      setTimeout(() => { featuredBtn.textContent = 'Agregar al carrito'; }, 1500);
+    });
+  }
+
+  // Newsletter
+  const newsletterBtn = document.querySelector('.newsletter-form button');
+  const newsletterInput = document.querySelector('.newsletter-form input');
+  if (newsletterBtn) {
+    newsletterBtn.addEventListener('click', () => {
+      if (newsletterInput && newsletterInput.value.includes('@')) {
+        newsletterBtn.textContent = '¡Listo!';
+        newsletterBtn.style.background = 'var(--musgo)';
+        newsletterInput.value = '';
+        newsletterInput.placeholder = 'Suscripción confirmada';
+      } else {
+        newsletterInput.style.border = '1px solid var(--terracota)';
+        setTimeout(() => { newsletterInput.style.border = ''; }, 1500);
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
